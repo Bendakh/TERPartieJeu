@@ -3143,7 +3143,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cac1dd3101447a49bba3daf2c4ab4d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bombPrefab: {fileID: 0}
+  bombPrefab: {fileID: 6967276188856438224, guid: 3d0fe6be52187644489bc5c9b315f4ab,
+    type: 3}
   wall: {fileID: 11400000, guid: c0b0ba3555472c9478bc05d1c204a62f, type: 2}
   destructible: {fileID: 11400000, guid: 3e837ab4f004f174d94791399a46c285, type: 2}
   tileMap: {fileID: 0}
@@ -3218,9 +3219,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 878232253}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3e68e276850f4544826a43024d44294, type: 3}
+  m_Script: {fileID: 11500000, guid: efd615157726ef947bbf51bc94914540, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bombsUsed: 0
   radius: 3
   moveTime: 0.5
   explodeTime: 2
@@ -9995,3 +9997,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 534364d995b29304092e7cae4bbe0574, type: 3}
+--- !u!1 &4475131840555466491 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4475131840936472219, guid: 534364d995b29304092e7cae4bbe0574,
+    type: 3}
+  m_PrefabInstance: {fileID: 4475131840555466490}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4475131840555466492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4475131840555466491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efd615157726ef947bbf51bc94914540, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bombsUsed: 0
+  radius: 3
+  moveTime: 0.5
+  explodeTime: 2
+  maxHp: 100
+  damage: 20
+  bombNumber: 1

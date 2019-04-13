@@ -12,7 +12,7 @@ public class Bomb : MonoBehaviour
     [SerializeField]
     private float countdown;
 
-    private Player owner;
+    private Stats owner;
 
     [SerializeField]
     private Tilemap tileMap;
@@ -33,18 +33,18 @@ public class Bomb : MonoBehaviour
     
 
     //Bomb instantiation, the attribute owner will take the owner of the bomb to take some info from it 
-    public Bomb(Player owner)
+    /*public Bomb(Player owner)
     {
         this.owner = owner;
         this.radius = this.owner.getRadius();
-    }
+    }*/
 
-    private void SetStats(Player player)
+    private void SetStats(Stats stats)
     {
-        this.owner = player;
-        this.radius = player.getRadius();
-        this.explodeTime = player.getExplodeTime();
-        this.damage = player.getDamage();
+        this.owner = stats;
+        this.radius = stats.getRadius();
+        this.explodeTime = stats.getExplodeTime();
+        this.damage = stats.getDamage();
     }
 
     // Start is called before the first frame update

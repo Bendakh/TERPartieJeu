@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class HealPowerUp : PowerUp
 {
-    public override void Buff(Player player)
+    public override void Buff(Stats stats)
     {
-        player.setHp(player.getHp() + 10);
+        stats.setHp(stats.getHp() + 10);
         
     }
 }

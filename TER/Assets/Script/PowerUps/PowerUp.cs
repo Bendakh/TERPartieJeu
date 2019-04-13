@@ -16,13 +16,13 @@ public abstract class PowerUp : MonoBehaviour
     
     public PowerUpType type;
 
-    public abstract void Buff(Player player);
+    public abstract void Buff(Stats stats);
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.tag == "Player")
         {
-            Buff(collision.gameObject.GetComponent<Player>());
+            Buff(collision.gameObject.GetComponent<Stats>());
             Destroy(this.gameObject);
         }
     }

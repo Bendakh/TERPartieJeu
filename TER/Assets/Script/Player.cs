@@ -7,8 +7,7 @@ public class Player : MonoBehaviour
 {
     //NOTE TO FUTUR SELF: SET A LIMIT FOR THE POWER UPS
     //Misc
-    [SerializeField]
-    private int bombsUsed;
+    
 
 
     //MoveEngine
@@ -23,103 +22,23 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject bombPrefab;
 
-    //Stats
-    [SerializeField]
-    private int radius = 3;
-    [SerializeField]
-    private float moveTime = .5f;
-    [SerializeField]
-    private float explodeTime = 2f;
-    [SerializeField]
-    private int maxHp;
-    private int currentHp;
-    [SerializeField]
-    private int damage;
-    [SerializeField]
-    private int bombNumber;
-
-    //Getters and Setters
-    public void setRadius(int r)
+    private Stats playerStats;
+    
+    public Stats getPlayerStats()
     {
-        this.radius = r;
+        return this.playerStats;
     }
+   
 
-    public float getMoveTime()
-    {
-        return this.moveTime;
-    }
-
-    public void setMoveTime(float mt)
-    {
-        this.moveTime = mt;
-    }
-
-    public float getExplodeTime()
-    {
-        return this.explodeTime;
-    }
-
-    public void setExplodeTime(float et)
-    {
-        this.explodeTime = et;
-    }
-
-    public void setMaxHp(int val)
-    {
-        this.maxHp = val;
-    }
-
-    public int getMaxHp()
-    {
-        return this.maxHp;
-    }
-
-    public void setHp(int val)
-    {
-        this.currentHp = val;
-    }
-
-    public int getHp()
-    {
-        return this.currentHp;
-    }
-
-    public void setDamage(int value)
-    {
-        this.damage = value;
-    }
-
-    public int getDamage()
-    {
-        return this.damage;
-    }
-
-    public void setBombNumber(int value)
-    {
-        this.bombNumber = value;
-    }
-
-    public int getBombNumber()
-    {
-        return this.bombNumber;
-    }
-
-    public void setBombsUsed(int value)
-    {
-        this.bombsUsed = value;
-    }
-
-    public int getBombsUsed()
-    {
-        return this.bombsUsed;
-    }
+    
 
     // Start is called before the first frame update
     void Start()
     {
-        bombsUsed = 0;
+        playerStats = this.GetComponent<Stats>();
+        
         obstacle = false;
-        bombNumber = 1;
+        
         canMove = true;
         rb2d = GetComponent<Rigidbody2D>();
         tileMap = GameObject.FindGameObjectWithTag("obstacles").GetComponentInParent<Tilemap>();
@@ -127,13 +46,10 @@ public class Player : MonoBehaviour
         Vector3Int tempPos = tileMap.WorldToCell(this.transform.position);
         this.transform.position = tileMap.GetCellCenterWorld(tempPos);
 
-        this.currentHp = this.maxHp;
+        
     }
 
-    public int getRadius()
-    {
-        return this.radius;
-    }
+    
 
     // Update is called once per frame
     void FixedUpdate()
@@ -144,10 +60,12 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space) && bombsUsed < this.bombNumber)
+        if(Input.GetKeyDown(KeyCode.Space) && this.playerStats.getBombsUsed() < playerStats.getBombNumber())
         {
             PutBomb();
-            bombsUsed++;
+            int temp = this.playerStats.getBombsUsed();
+            temp++;
+            this.playerStats.setBombsUsed(temp);
         }
 
         RegulateHp();
@@ -163,7 +81,7 @@ public class Player : MonoBehaviour
         Vector3 tempPos = tileMap.GetCellCenterWorld(cell);
 
         GameObject bombToSpawn = Instantiate(bombPrefab, tempPos, Quaternion.identity);
-        bombToSpawn.SendMessage("SetStats",this);
+        bombToSpawn.SendMessage("SetStats",this.getPlayerStats());
     }
 
     void MoveCompute()
@@ -211,7 +129,7 @@ public class Player : MonoBehaviour
         float sqrDist = (transform.position - end).sqrMagnitude;
         while (sqrDist > float.Epsilon)
         {
-            Vector3 newPos = Vector3.MoveTowards(rb2d.position, end, (1 / moveTime) * Time.deltaTime);
+            Vector3 newPos = Vector3.MoveTowards(rb2d.position, end, (1 / playerStats.getMoveTime()) * Time.deltaTime);
             rb2d.MovePosition(newPos);
             sqrDist = (transform.position - end).sqrMagnitude;
             if (obstacle)
@@ -229,18 +147,22 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(int dmg)
     {
-        this.currentHp -= dmg;
+        int tempHp = this.playerStats.getHp();
+        tempHp -= dmg;
+        this.playerStats.setHp(tempHp);
+
         RegulateHp();
-        if (this.currentHp <= 0)
+
+        if (this.playerStats.getHp() <= 0)
             Die();
     }
 
     private void RegulateHp()
     {
-        if (this.currentHp > this.maxHp)
-            this.currentHp = this.maxHp;
-        if (this.currentHp < 0)
-            this.currentHp = 0;
+        if (this.playerStats.getHp() > this.playerStats.getMaxHp())
+            this.playerStats.setHp(this.playerStats.getMaxHp());
+        if (this.playerStats.getHp() < 0)
+            this.playerStats.setHp(0);
     }
 
     private void Die()

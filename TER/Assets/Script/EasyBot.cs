@@ -8,6 +8,7 @@ public class EasyBot : MonoBehaviour
     [SerializeField]
     private GameObject bombPrefab;
 
+    private Stats botStats;
 
     private int radius = 3;
     private int[] directions;
@@ -44,6 +45,7 @@ public class EasyBot : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        botStats = this.GetComponent<Stats>();
         rb2d = GetComponent<Rigidbody2D>();
         tileMap = GameObject.FindGameObjectWithTag("obstacles").GetComponentInParent<Tilemap>();
         playersList = GameObject.FindGameObjectsWithTag("Player");
@@ -278,7 +280,10 @@ public class EasyBot : MonoBehaviour
             {
                 Debug.Log("Put bomb on x");
                 //Put a bomb
+                PutABomb();
                 //Flee
+                this.currentState = States.FLEEING;
+                
             }
         }
 
@@ -290,7 +295,11 @@ public class EasyBot : MonoBehaviour
             {
                 Debug.Log("Put bomb on y");
                 //Put a bomb
+                PutABomb();
                 //Flee
+                this.currentState = States.FLEEING;
+                
+                
             }
         }
 
@@ -487,7 +496,7 @@ public class EasyBot : MonoBehaviour
         float sqrDist = (transform.position - end).sqrMagnitude;
         while (sqrDist > float.Epsilon)
         {
-            Vector3 newPos = Vector3.MoveTowards(rb2d.position, end, (1 / this.gameObject.GetComponent<BotStats>().getMoveTime()) * Time.deltaTime);
+            Vector3 newPos = Vector3.MoveTowards(rb2d.position, end, (1 / this.botStats.getMoveTime()) * Time.deltaTime);
             rb2d.MovePosition(newPos);
             sqrDist = (transform.position - end).sqrMagnitude;
             /*if (obstacle)
@@ -505,12 +514,19 @@ public class EasyBot : MonoBehaviour
 
     private void PutABomb()
     {
-        Vector3 pos = this.transform.position;
-        Vector3Int cell = tileMap.WorldToCell(pos);
-        Vector3 tempPos = tileMap.GetCellCenterWorld(cell);
+        if (this.botStats.getBombsUsed() < this.botStats.getBombNumber())
+        {
+            Vector3 pos = this.transform.position;
+            Vector3Int cell = tileMap.WorldToCell(pos);
+            Vector3 tempPos = tileMap.GetCellCenterWorld(cell);
 
-        GameObject bombToSpawn = Instantiate(bombPrefab, tempPos, Quaternion.identity);
-        bombToSpawn.SendMessage("SetStats", this);
+            GameObject bombToSpawn = Instantiate(bombPrefab, tempPos, Quaternion.identity);
+            bombToSpawn.SendMessage("SetStats", this.botStats);
+
+            int temp = this.botStats.getBombsUsed();
+            temp++;
+            this.botStats.setBombsUsed(temp);
+        }
 
     }
 }

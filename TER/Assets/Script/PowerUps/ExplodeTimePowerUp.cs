@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class ExplodeTimePowerUp : PowerUp
 {
-    public override void Buff(Player player)
+    public override void Buff(Stats stats)
     {
-        player.setExplodeTime(player.getExplodeTime() - 0.2f);
+        stats.setExplodeTime(stats.getExplodeTime() - 0.2f);
+        
     }
 }

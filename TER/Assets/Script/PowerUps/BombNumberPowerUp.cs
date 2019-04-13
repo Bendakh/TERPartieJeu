@@ -4,20 +4,10 @@ using UnityEngine;
 
 public class BombNumberPowerUp : PowerUp
 {
-    public override void Buff(Player player)
+    public override void Buff(Stats stats)
     {
-        player.setBombNumber(player.getBombNumber() + 1);
+        stats.setBombNumber(stats.getBombNumber() + 1);
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }

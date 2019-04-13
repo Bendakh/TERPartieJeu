@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class DamagePowerUp : PowerUp
 {
-    public override void Buff(Player player)
+    public override void Buff(Stats stats)
     {
-        player.setDamage(player.getDamage() + 5);
+        stats.setDamage(stats.getDamage() + 5);
     }
 }
