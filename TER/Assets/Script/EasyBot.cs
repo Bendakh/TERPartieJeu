@@ -13,7 +13,7 @@ public class EasyBot : MonoBehaviour
     private int radius = 3;
     private int[] directions;
     private GameObject[] playersList;
-    private Player nearestPlayer;
+    private GameObject nearestPlayer;
     private float explodeTime = 2f;
     private float explodeCounter;
     private Vector3Int bombPosition;
@@ -56,7 +56,7 @@ public class EasyBot : MonoBehaviour
 
     }
 
-    private void SetCurrentTarget(Player nearestPlayer)
+    private void SetCurrentTarget(GameObject nearestPlayer)
     {
         if (nearestPlayer != this)
         {
@@ -71,14 +71,22 @@ public class EasyBot : MonoBehaviour
 
     private void FindNearestPlayer()
     {
-        SetCurrentTarget(playersList[0].GetComponent<Player>());
+       
+        for(int i = 0; i < playersList.Length; i++)
+        {
+            SetCurrentTarget(playersList[i]);
+            if (nearestPlayer != null)
+                break;
+        }
+        
+
         for (int i = 0; i < playersList.Length; i++)
         {
             if (playersList[i] != this.gameObject)
             {
                 if (DistanceBetweenTwoPlayers(this.gameObject, nearestPlayer.gameObject) >= DistanceBetweenTwoPlayers(this.gameObject, playersList[i]))
                 {
-                    SetCurrentTarget(playersList[i].GetComponent<Player>());
+                    SetCurrentTarget(playersList[i]);
                 }
             }
         }
@@ -231,6 +239,24 @@ public class EasyBot : MonoBehaviour
         directions = ComputeDirections();
         int fleeAction = Random.Range(0, 4);
 
+        int bugCounter = 0;
+        //See if stuck to avoid infinite loop
+        //This should repair the issue of the infinite loop by returning when the bot is stuck
+        //------------------------------------
+        for(int i = 0; i < 4; i++)
+        {
+            if(directions[i] != 0 && i != toAvoid)
+            {
+                bugCounter++;
+            }
+        }
+
+        if (bugCounter == 3)
+            return;
+        //------------------------------------
+
+
+        //THIS IS MAKING SOME SERIOUS PROBLEMS
         while (directions[fleeAction] != 0 || fleeAction == toAvoid)
         {
             fleeAction = Random.Range(0, 4);
@@ -282,8 +308,40 @@ public class EasyBot : MonoBehaviour
                 //Put a bomb
                 PutABomb();
                 //Flee
+
+                this.explodeCounter = this.explodeTime;
+                directions = ComputeDirections();
+
+                int fleeAction = Random.Range(0, 4);
+
+                while (directions[fleeAction] != 0)
+                {
+                    fleeAction = Random.Range(0, 4);
+                }
+
+                if (fleeAction == 0)
+                {
+                    toAvoid = 2;
+                    Move(0, 1);
+                }
+                if (fleeAction == 1)
+                {
+                    toAvoid = 3;
+                    Move(1, 0);
+                }
+                if (fleeAction == 2)
+                {
+                    toAvoid = 0;
+                    Move(0, -1);
+                }
+                if (fleeAction == 3)
+                {
+                    toAvoid = 1;
+                    Move(-1, 0);
+                }
+
                 this.currentState = States.FLEEING;
-                
+
             }
         }
 
@@ -296,10 +354,43 @@ public class EasyBot : MonoBehaviour
                 Debug.Log("Put bomb on y");
                 //Put a bomb
                 PutABomb();
+
                 //Flee
+
+                this.explodeCounter = this.explodeTime;
+                directions = ComputeDirections();
+
+                int fleeAction = Random.Range(0, 4);
+
+                while (directions[fleeAction] != 0)
+                {
+                    fleeAction = Random.Range(0, 4);
+                }
+
+                if (fleeAction == 0)
+                {
+                    toAvoid = 2;
+                    Move(0, 1);
+                }
+                if (fleeAction == 1)
+                {
+                    toAvoid = 3;
+                    Move(1, 0);
+                }
+                if (fleeAction == 2)
+                {
+                    toAvoid = 0;
+                    Move(0, -1);
+                }
+                if (fleeAction == 3)
+                {
+                    toAvoid = 1;
+                    Move(-1, 0);
+                }
+
                 this.currentState = States.FLEEING;
-                
-                
+
+
             }
         }
 
@@ -452,8 +543,8 @@ public class EasyBot : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        //Debug.Log(Vector2.Distance(this.gameObject.transform.position, nearestPlayer.transform.position));
-        //Debug.Log(new Vector2(this.gameObject.transform.position.x - nearestPlayer.transform.position.x, this.gameObject.transform.position.y - nearestPlayer.transform.position.y));
+        FindNearestPlayer();
+        
         if (currentState == States.PATROL)
         {
             if (canMove)
