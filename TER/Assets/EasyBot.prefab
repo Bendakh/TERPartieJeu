@@ -194,6 +194,6 @@ MonoBehaviour:
   radius: 3
   moveTime: 0.5
   explodeTime: 2
-  maxHp: 0
-  damage: 0
-  bombNumber: 0
+  maxHp: 50
+  damage: 10
+  bombNumber: 1

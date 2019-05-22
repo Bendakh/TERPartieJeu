@@ -193,7 +193,7 @@ public class EasyBot : MonoBehaviour
         {
 
             //Debug.Log("Put a bomb");
-            
+            PutABomb();
             //Instantiate Bomb
             
             this.explodeCounter = this.explodeTime;
@@ -619,5 +619,32 @@ public class EasyBot : MonoBehaviour
             this.botStats.setBombsUsed(temp);
         }
 
+    }
+
+    public void TakeDamage(int dmg)
+    {
+        int tempHp = this.botStats.getHp();
+        tempHp -= dmg;
+        this.botStats.setHp(tempHp);
+
+        RegulateHp();
+
+
+    }
+
+    private void RegulateHp()
+    {
+        if (this.botStats.getHp() > this.botStats.getMaxHp())
+            this.botStats.setHp(this.botStats.getMaxHp());
+        if (this.botStats.getHp() < 0)
+            this.botStats.setHp(0);
+
+        if (this.botStats.getHp() <= 0)
+            Die();
+    }
+
+    private void Die()
+    {
+        Destroy(this.gameObject);
     }
 }

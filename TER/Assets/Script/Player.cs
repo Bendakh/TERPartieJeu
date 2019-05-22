@@ -153,8 +153,7 @@ public class Player : MonoBehaviour
 
         RegulateHp();
 
-        if (this.playerStats.getHp() <= 0)
-            Die();
+        
     }
 
     private void RegulateHp()
@@ -163,6 +162,9 @@ public class Player : MonoBehaviour
             this.playerStats.setHp(this.playerStats.getMaxHp());
         if (this.playerStats.getHp() < 0)
             this.playerStats.setHp(0);
+
+        if (this.playerStats.getHp() <= 0)
+            Die();
     }
 
     private void Die()

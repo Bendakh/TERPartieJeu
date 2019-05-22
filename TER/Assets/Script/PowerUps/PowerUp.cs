@@ -11,6 +11,7 @@ public abstract class PowerUp : MonoBehaviour
         HEALTH,
         SPEED,
         BOMB,
+        TIMER,
         KILLER
     }
     

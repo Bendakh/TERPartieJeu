@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject playerPrefab;
 
-    List<Player> playerList;
+    Stats[] playerList;
 
     private void Awake()
     {
@@ -26,16 +26,20 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerList = new List<Player>();
+        playerList = FindObjectsOfType<Stats>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        playerList = FindObjectsOfType<Stats>();
+        if (playerList.Length == 1)
+        {
+            Debug.Log("GAMEOVER");
+        }
     }
 
-    public void InstantiatePlayer(int id, string pseudo, Color color, Vector2 worldPos)
+    /*public void InstantiatePlayer(int id, string pseudo, Color color, Vector2 worldPos)
     {
         GameObject playerAvatar = Instantiate(playerPrefab, worldPos, Quaternion.identity);
         playerAvatar.GetComponent<SpriteRenderer>().color = color;
@@ -47,5 +51,5 @@ public class GameManager : MonoBehaviour
     public void RemovePlayer(int id, string pseudo, Player player)
     {
         playerList.Remove(player);
-    }
+    }*/
 }

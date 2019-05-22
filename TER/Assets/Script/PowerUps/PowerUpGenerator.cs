@@ -27,23 +27,33 @@ public class PowerUpGenerator : MonoBehaviour
             else if(powerUpChance > 15 && powerUpChance <= 30)
             {
                 //Spawn Damage Power Up
+                Instantiate(powerUpList[2], pos, Quaternion.identity);
             }
             else if(powerUpChance > 30 && powerUpChance <= 50)
             {
                 //Spawn Health Power Up ( Heal )
+                Instantiate(powerUpList[4], pos, Quaternion.identity);
             }
             else if(powerUpChance > 50 && powerUpChance <= 70)
             {
                 //Spawn Speed Power Up 
+                Instantiate(powerUpList[6], pos, Quaternion.identity);
             }
             else if(powerUpChance > 70 && powerUpChance <= 80)
             {
                 //Spawn Bomb Limit Power Up
+                Instantiate(powerUpList[1], pos, Quaternion.identity);
             }
             else if(powerUpChance > 80 && powerUpChance <= 100)
             {
-                //Spawn Killer Malus 
+                //Timer
+                Instantiate(powerUpList[3], pos, Quaternion.identity);
             }
+        }
+        else if(tempRandom >= 95)
+        {
+            Instantiate(powerUpList[5], pos, Quaternion.identity);
+
         }
     }
 }

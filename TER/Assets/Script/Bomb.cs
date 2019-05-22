@@ -157,7 +157,8 @@ public class Bomb : MonoBehaviour
         //See if there is bombs
         thereIsBomb = false;
         Bomb[] bombList = FindObjectsOfType<Bomb>();
-        Player[] playerList = FindObjectsOfType<Player>();
+        Stats[] playerList = FindObjectsOfType<Stats>();
+        
 
         for (int i = 0; i < bombList.Length; i++)
         {

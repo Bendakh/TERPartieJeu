@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainMenuUi : MonoBehaviour
 {
@@ -47,5 +48,10 @@ public class MainMenuUi : MonoBehaviour
     {
         mainPanel.SetActive(true);
         optionsPanel.SetActive(false);
+    }
+
+    public void StartGameButton()
+    {
+        SceneManager.LoadScene(1);
     }
 }
